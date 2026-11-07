@@ -1,0 +1,53 @@
+/* All app colors and design tokens live here. Use the variables, not hex values. */
+:root {
+  /* Brand palette (README) */
+  --color-bg: #ebe9e1;
+  --color-text: #ed3d12;
+  --color-primary: #efb11d;
+  --color-accent-soft: #ffa2b6;
+  --color-accent: #d6536d;
+
+  /* Surfaces */
+  --color-surface: #fcf9f1;
+  --color-surface-low: #f6f4eb;
+  --color-surface-container: #f0eee6;
+  --color-surface-high: #eae8e0;
+  --color-surface-highest: #e4e2db;
+  --color-surface-white: #ffffff;
+
+  /* Text */
+  --color-ink: #1b1c17;
+  --color-ink-muted: #504533;
+  --color-outline: #827561;
+
+  /* Accents */
+  --color-secondary: #aa314d;
+  --color-on-secondary: #ffffff;
+  --color-primary-hover: #fbbc2b;
+  --color-on-primary: #634600;
+  --color-star: #7b5800;
+  --color-tertiary-soft: #fea1b5;
+
+  /* Effects */
+  --shadow-sm: 0 2px 8px rgba(104, 99, 88, 0.08);
+  --shadow-md: 0 4px 16px -2px rgba(104, 99, 88, 0.14);
+  --shadow-lg: 0 16px 32px -8px rgba(104, 99, 88, 0.25);
+  --image-shade: linear-gradient(to top, rgba(0, 0, 0, 0.6), transparent 50%, rgba(0, 0, 0, 0.2));
+
+  /* Type */
+  --font-body: "Plus Jakarta Sans", system-ui, sans-serif;
+  --font-label: "Space Grotesk", system-ui, sans-serif;
+
+  /* Shape and spacing */
+  --radius-sm: 0.25rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-full: 9999px;
+  --space-xs: 0.25rem;
+  --space-sm: 0.5rem;
+  --space-md: 1rem;
+  --space-lg: 1.5rem;
+  --space-xl: 2.5rem;
+  --page-margin: 2rem;
+  --page-margin-mobile: 1rem;
+}

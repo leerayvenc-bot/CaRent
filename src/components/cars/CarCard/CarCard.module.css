@@ -1,0 +1,277 @@
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background: var(--color-surface-white);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.card:hover,
+.card:focus-within {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+}
+
+.rented {
+  opacity: 0.9;
+}
+
+/* Image area */
+.media {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  background: var(--color-surface-container);
+  overflow: hidden;
+}
+
+.image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.5s;
+}
+
+.card:hover .image {
+  transform: scale(1.05);
+}
+
+.rented .image {
+  filter: grayscale(20%);
+}
+
+.imageFallback {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-outline);
+}
+
+.shade {
+  position: absolute;
+  inset: 0;
+  background: var(--image-shade);
+  pointer-events: none;
+}
+
+.topRow {
+  position: absolute;
+  top: var(--space-sm);
+  left: var(--space-sm);
+  right: var(--space-sm);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Sits above the card's stretched title link so it stays clickable */
+.saveButton {
+  position: relative;
+  z-index: 2;
+  width: 2rem;
+  height: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: var(--radius-full);
+  background: var(--color-surface-white);
+  color: var(--color-secondary);
+  box-shadow: var(--shadow-sm);
+  cursor: pointer;
+  transition: transform 0.1s;
+}
+
+.saveButton:active {
+  transform: scale(0.9);
+}
+
+.rented .saveButton:not(.saved) {
+  color: var(--color-ink-muted);
+}
+
+.price {
+  position: absolute;
+  bottom: var(--space-sm);
+  left: var(--space-sm);
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-xs);
+  padding: var(--space-xs) var(--space-sm);
+  border-radius: var(--radius-md);
+  background: var(--color-surface-white);
+  box-shadow: var(--shadow-md);
+}
+
+.priceAmount {
+  font-family: var(--font-body);
+  font-size: 1.25rem;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--color-secondary);
+}
+
+.rented .priceAmount {
+  color: var(--color-ink);
+}
+
+.priceUnit {
+  font-family: var(--font-label);
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--color-ink-muted);
+}
+
+/* Details */
+.body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  padding: var(--space-md);
+}
+
+.tagline {
+  font-family: var(--font-label);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-ink-muted);
+}
+
+.title {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 1.25rem;
+  font-weight: 700;
+  line-height: 1.75rem;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.titleLink {
+  color: var(--color-ink);
+  text-decoration: none;
+  transition: color 0.15s;
+}
+
+/* Makes the whole card clickable through the title link */
+.titleLink::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+.card:hover .titleLink,
+.titleLink:focus-visible {
+  color: var(--color-secondary);
+}
+
+.titleLink:focus-visible {
+  outline: none;
+}
+
+.card:has(.titleLink:focus-visible) {
+  outline: 3px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+.rating {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  margin-top: 0.125rem;
+  font-family: var(--font-label);
+  font-size: 0.75rem;
+}
+
+.star {
+  color: var(--color-star);
+}
+
+.ratingValue {
+  font-weight: 700;
+  color: var(--color-ink);
+}
+
+.ratingCount {
+  color: var(--color-ink-muted);
+}
+
+.specs {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-sm);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  color: var(--color-ink-muted);
+}
+
+.spec {
+  display: flex;
+  align-items: center;
+  gap: 0.125rem;
+}
+
+.spec + .spec::before {
+  content: "•";
+  margin-right: var(--space-sm);
+}
+
+.footer {
+  margin-top: auto;
+  padding-top: var(--space-xs);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-sm);
+}
+
+.location {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  min-width: 0;
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  color: var(--color-ink-muted);
+}
+
+.pin {
+  flex-shrink: 0;
+  color: var(--color-secondary);
+}
+
+.rented .pin {
+  color: var(--color-outline);
+}
+
+.truncate {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.owner {
+  flex-shrink: 0;
+  padding: 0.125rem var(--space-sm);
+  border-radius: var(--radius-md);
+  background: var(--color-surface-container);
+  font-family: var(--font-label);
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--color-ink);
+}
