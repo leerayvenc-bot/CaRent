@@ -1,0 +1,46 @@
+/* 40px chip with a 44px tap area */
+.chip {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  height: var(--chip-height);
+  margin: 2px 0;
+  padding: 0 var(--space-4);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-pill);
+  background: var(--color-surface);
+  color: var(--color-body);
+  font: var(--font-small);
+  font-weight: 600;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background var(--motion-fast) ease-out, border-color var(--motion-fast) ease-out;
+}
+
+.chip::after {
+  content: "";
+  position: absolute;
+  inset: -2px 0;
+}
+
+.chip:hover {
+  border-color: var(--color-muted);
+}
+
+.chip:focus-visible {
+  outline: 2px solid var(--color-text);
+  outline-offset: 2px;
+}
+
+.selected,
+.selected:hover {
+  background: var(--color-accent-soft);
+  border-color: var(--color-text);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .chip {
+    transition: none;
+  }
+}

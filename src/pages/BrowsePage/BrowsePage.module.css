@@ -1,0 +1,54 @@
+.page {
+  --page-gutter: var(--space-10);
+  min-height: 100vh;
+  background: var(--color-bg);
+  color: var(--color-body);
+  font: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* No form control falls back to the browser font */
+.page :is(button, input, select, textarea) {
+  font-family: inherit;
+}
+
+.inner {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  max-width: var(--content-max);
+  margin: 0 auto;
+  padding: var(--space-6) var(--page-gutter) var(--space-10);
+}
+
+.results {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  margin-top: var(--space-2); /* 32px between FilterBar and ResultsHeader */
+}
+
+.more {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.moreText {
+  margin: 0;
+  font: var(--font-small);
+  color: var(--color-muted);
+}
+
+@media (max-width: 1023px) {
+  .page {
+    --page-gutter: var(--space-6);
+  }
+}
+
+@media (max-width: 639px) {
+  .page {
+    --page-gutter: var(--space-4);
+  }
+}

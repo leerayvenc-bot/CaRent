@@ -1,0 +1,63 @@
+/* Desktop XL: one row with Sort on the right. Desktop: may wrap to two rows.
+   Tablet and phone: chips become a horizontally scrollable row, with
+   Available only and Sort in a row below. */
+.bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: var(--space-4) var(--space-6);
+  min-width: 0;
+}
+
+.groups {
+  min-width: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: var(--space-4) var(--space-6);
+}
+
+.controls {
+  display: flex;
+  flex: 1 1 auto;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--space-2) var(--space-4);
+}
+
+.sort {
+  margin-left: auto;
+}
+
+@media (max-width: 1023px) {
+  .bar {
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-items: stretch;
+  }
+
+  .groups {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    /* let the row scroll to the screen edge */
+    margin: 0 calc(-1 * var(--page-gutter));
+    padding: 0 var(--page-gutter) var(--space-1);
+    scrollbar-width: thin;
+  }
+
+  /* groups keep their natural width and scroll instead of squeezing */
+  .groups > * {
+    flex-shrink: 0;
+  }
+
+  .controls {
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    gap: var(--space-2);
+  }
+
+  .sort {
+    min-width: 0;
+  }
+}

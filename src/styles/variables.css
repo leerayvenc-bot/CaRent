@@ -1,53 +1,61 @@
-/* All app colors and design tokens live here. Use the variables, not hex values. */
+/* Design tokens. Components use these variables, never raw hex or pixel values.
+   Red (--color-text) means identity, state and focus. Mustard (--color-primary)
+   is the one filled action on a surface. Do not add other accent colors. */
 :root {
-  /* Brand palette (README) */
+  /* Color */
   --color-bg: #ebe9e1;
+  --color-surface: #ffffff;
   --color-text: #ed3d12;
   --color-primary: #efb11d;
+  --color-primary-hover: #dda010;
   --color-accent-soft: #ffa2b6;
   --color-accent: #d6536d;
+  --color-body: #1f1b16;
+  --color-muted: #5f5850;
+  --color-link: #b52a0c;
+  --color-border: #d9d3c6;
+  --color-rented: #2b2621;
+  --color-error: #c62828;
+  --color-placeholder: #e1ddd3;
+  --color-image-shade: linear-gradient(to top, rgba(31, 27, 22, 0.55), rgba(31, 27, 22, 0));
 
-  /* Surfaces */
-  --color-surface: #fcf9f1;
-  --color-surface-low: #f6f4eb;
-  --color-surface-container: #f0eee6;
-  --color-surface-high: #eae8e0;
-  --color-surface-highest: #e4e2db;
-  --color-surface-white: #ffffff;
+  /* Typography (use with the `font` shorthand) */
+  --font-family: "Plus Jakarta Sans", system-ui, sans-serif;
+  --font-heading-lg: 700 28px / 36px var(--font-family);
+  --font-title: 700 20px / 26px var(--font-family);
+  --font-body: 400 15px / 22px var(--font-family);
+  --font-body-strong: 600 15px / 22px var(--font-family);
+  --font-small: 400 13px / 18px var(--font-family);
+  --font-caption: 600 12px / 16px var(--font-family);
+  --font-price: 700 22px / 28px var(--font-family);
 
-  /* Text */
-  --color-ink: #1b1c17;
-  --color-ink-muted: #504533;
-  --color-outline: #827561;
+  /* Spacing */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
 
-  /* Accents */
-  --color-secondary: #aa314d;
-  --color-on-secondary: #ffffff;
-  --color-primary-hover: #fbbc2b;
-  --color-on-primary: #634600;
-  --color-star: #7b5800;
-  --color-tertiary-soft: #fea1b5;
+  /* Shape */
+  --radius-card: 12px;
+  --radius-control: 10px;
+  --radius-pill: 999px;
 
-  /* Effects */
-  --shadow-sm: 0 2px 8px rgba(104, 99, 88, 0.08);
-  --shadow-md: 0 4px 16px -2px rgba(104, 99, 88, 0.14);
-  --shadow-lg: 0 16px 32px -8px rgba(104, 99, 88, 0.25);
-  --image-shade: linear-gradient(to top, rgba(0, 0, 0, 0.6), transparent 50%, rgba(0, 0, 0, 0.2));
+  /* Shadow */
+  --shadow-card: 0 1px 2px rgba(31, 27, 22, 0.06);
+  --shadow-card-hover: 0 6px 16px rgba(31, 27, 22, 0.12);
+  --shadow-dropdown: 0 8px 24px rgba(31, 27, 22, 0.16);
 
-  /* Type */
-  --font-body: "Plus Jakarta Sans", system-ui, sans-serif;
-  --font-label: "Space Grotesk", system-ui, sans-serif;
+  /* Layout */
+  --target-min: 44px;
+  --chip-height: 40px;
+  --content-max: 1440px;
+  --image-shade-height: 64px;
 
-  /* Shape and spacing */
-  --radius-sm: 0.25rem;
-  --radius-md: 0.5rem;
-  --radius-lg: 0.75rem;
-  --radius-full: 9999px;
-  --space-xs: 0.25rem;
-  --space-sm: 0.5rem;
-  --space-md: 1rem;
-  --space-lg: 1.5rem;
-  --space-xl: 2.5rem;
-  --page-margin: 2rem;
-  --page-margin-mobile: 1rem;
+  /* Motion */
+  --motion-fast: 100ms;
+  --motion-base: 150ms;
+  --motion-slow: 250ms;
 }

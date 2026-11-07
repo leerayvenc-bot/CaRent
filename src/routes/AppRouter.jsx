@@ -6,7 +6,7 @@ import { ROUTES } from "../constants/routePaths";
 // Built pages (adjust the paths to match your folders)
 import Login from "../pages/Login";
 import Register from "../pages/Register";
-import Browse from "../pages/Browse/Browse";
+import BrowsePage from "../pages/BrowsePage/BrowsePage";
 
 // Temporary stand-in.
 function Placeholder({ name }) {
@@ -48,7 +48,7 @@ export default function AppRouter() {
       )}
 
       {/* Public: guests can see these */}
-      <Route path={ROUTES.BROWSE} element={<Browse />} />
+      <Route path={ROUTES.BROWSE} element={<BrowsePage />} />
       <Route path={ROUTES.LISTING} element={<Placeholder name="Listing detail" />} />
 
       {/* Guests only: logged-in users get redirected away */}
