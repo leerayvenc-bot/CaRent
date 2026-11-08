@@ -2,276 +2,201 @@
   position: relative;
   display: flex;
   flex-direction: column;
-  background: var(--color-surface-white);
-  border-radius: var(--radius-lg);
+  height: 100%;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-card);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-card);
   overflow: hidden;
-  box-shadow: var(--shadow-sm);
-  transition: transform 0.3s, box-shadow 0.3s;
+  transition: transform var(--motion-base) ease-out, box-shadow var(--motion-base) ease-out;
 }
 
-.card:hover,
-.card:focus-within {
-  transform: translateY(-4px);
-  box-shadow: var(--shadow-lg);
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-card-hover);
 }
 
-.rented {
-  opacity: 0.9;
+/* The title link stretches over the whole card; the heart sits above it */
+.card:has(.link:focus-visible) {
+  outline: 2px solid var(--color-text);
+  outline-offset: 2px;
 }
 
-/* Image area */
+/* Image */
 .media {
   position: relative;
-  aspect-ratio: 4 / 3;
-  background: var(--color-surface-container);
+  aspect-ratio: 3 / 2;
+  background: var(--color-placeholder);
   overflow: hidden;
 }
 
 .image {
+  display: block;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  display: block;
-  transition: transform 0.5s;
+  object-position: center 60%;
+  transition: transform var(--motion-slow) ease-out;
 }
 
 .card:hover .image {
-  transform: scale(1.05);
+  transform: scale(1.03);
 }
 
 .rented .image {
-  filter: grayscale(20%);
+  filter: saturate(55%) brightness(85%);
 }
 
-.imageFallback {
-  width: 100%;
-  height: 100%;
+.placeholder {
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--color-outline);
+  width: 100%;
+  height: 100%;
+  color: var(--color-muted);
 }
 
 .shade {
   position: absolute;
-  inset: 0;
-  background: var(--image-shade);
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: var(--image-shade-height);
+  background: var(--color-image-shade);
   pointer-events: none;
 }
 
-.topRow {
+.badge {
   position: absolute;
-  top: var(--space-sm);
-  left: var(--space-sm);
-  right: var(--space-sm);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  top: var(--space-3);
+  left: var(--space-3);
 }
 
-/* Sits above the card's stretched title link so it stays clickable */
-.saveButton {
-  position: relative;
+.favorite {
+  position: absolute;
+  top: var(--space-1);
+  right: var(--space-1);
   z-index: 2;
-  width: 2rem;
-  height: 2rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: none;
-  border-radius: var(--radius-full);
-  background: var(--color-surface-white);
-  color: var(--color-secondary);
-  box-shadow: var(--shadow-sm);
-  cursor: pointer;
-  transition: transform 0.1s;
-}
-
-.saveButton:active {
-  transform: scale(0.9);
-}
-
-.rented .saveButton:not(.saved) {
-  color: var(--color-ink-muted);
 }
 
 .price {
   position: absolute;
-  bottom: var(--space-sm);
-  left: var(--space-sm);
-  display: flex;
-  align-items: baseline;
-  gap: var(--space-xs);
-  padding: var(--space-xs) var(--space-sm);
-  border-radius: var(--radius-md);
-  background: var(--color-surface-white);
-  box-shadow: var(--shadow-md);
+  left: var(--space-3);
+  bottom: var(--space-3);
 }
 
-.priceAmount {
-  font-family: var(--font-body);
-  font-size: 1.25rem;
-  font-weight: 700;
-  line-height: 1;
-  color: var(--color-secondary);
-}
-
-.rented .priceAmount {
-  color: var(--color-ink);
-}
-
-.priceUnit {
-  font-family: var(--font-label);
-  font-size: 0.75rem;
-  font-weight: 700;
-  color: var(--color-ink-muted);
-}
-
-/* Details */
+/* Body */
 .body {
-  flex: 1;
   display: flex;
+  flex: 1;
   flex-direction: column;
-  gap: var(--space-sm);
-  padding: var(--space-md);
+  gap: var(--space-2);
+  padding: var(--space-4);
 }
 
-.tagline {
-  font-family: var(--font-label);
-  font-size: 0.75rem;
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--color-ink-muted);
-}
-
-.title {
+.eyebrow {
   margin: 0;
-  font-family: var(--font-body);
-  font-size: 1.25rem;
-  font-weight: 700;
-  line-height: 1.75rem;
-  letter-spacing: -0.01em;
+  font: var(--font-caption);
+  color: var(--color-muted);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-.titleLink {
-  color: var(--color-ink);
-  text-decoration: none;
-  transition: color 0.15s;
+.title {
+  margin: 0;
+  font: var(--font-title);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
-/* Makes the whole card clickable through the title link */
-.titleLink::after {
+.link {
+  color: var(--color-body);
+  text-decoration: none;
+}
+
+.link::after {
   content: "";
   position: absolute;
   inset: 0;
   z-index: 1;
 }
 
-.card:hover .titleLink,
-.titleLink:focus-visible {
-  color: var(--color-secondary);
-}
-
-.titleLink:focus-visible {
+.link:focus-visible {
   outline: none;
 }
 
-.card:has(.titleLink:focus-visible) {
-  outline: 3px solid var(--color-primary);
-  outline-offset: 2px;
-}
-
-.rating {
+.rentedNote {
   display: flex;
   align-items: center;
-  gap: var(--space-xs);
-  margin-top: 0.125rem;
-  font-family: var(--font-label);
-  font-size: 0.75rem;
-}
-
-.star {
-  color: var(--color-star);
-}
-
-.ratingValue {
-  font-weight: 700;
-  color: var(--color-ink);
-}
-
-.ratingCount {
-  color: var(--color-ink-muted);
+  gap: var(--space-1);
+  margin: 0;
+  font: var(--font-small);
+  font-weight: 600;
+  color: var(--color-body);
 }
 
 .specs {
   display: flex;
   flex-wrap: wrap;
-  align-items: center;
-  gap: var(--space-sm);
+  gap: var(--space-1) var(--space-3);
   margin: 0;
   padding: 0;
   list-style: none;
-  font-family: var(--font-body);
-  font-size: 0.875rem;
-  color: var(--color-ink-muted);
+  font: var(--font-small);
+  color: var(--color-muted);
 }
 
 .spec {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: 0.125rem;
-}
-
-.spec + .spec::before {
-  content: "•";
-  margin-right: var(--space-sm);
+  gap: var(--space-1);
 }
 
 .footer {
-  margin-top: auto;
-  padding-top: var(--space-xs);
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  gap: var(--space-sm);
+  gap: var(--space-2) var(--space-3);
+  margin-top: auto;
+  padding-top: var(--space-2);
 }
 
 .location {
   display: flex;
   align-items: center;
-  gap: var(--space-xs);
+  gap: var(--space-1);
+  flex: 1 1 120px;
   min-width: 0;
-  font-family: var(--font-body);
-  font-size: 0.875rem;
-  color: var(--color-ink-muted);
+  font: var(--font-small);
+  color: var(--color-muted);
 }
 
-.pin {
+.location svg {
   flex-shrink: 0;
-  color: var(--color-secondary);
+  color: var(--color-accent);
 }
 
-.rented .pin {
-  color: var(--color-outline);
-}
-
-.truncate {
+.locationText {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-.owner {
-  flex-shrink: 0;
-  padding: 0.125rem var(--space-sm);
-  border-radius: var(--radius-md);
-  background: var(--color-surface-container);
-  font-family: var(--font-label);
-  font-size: 0.75rem;
-  font-weight: 700;
-  color: var(--color-ink);
+@media (prefers-reduced-motion: reduce) {
+  .card,
+  .image {
+    transition: none;
+  }
+
+  .card:hover {
+    transform: none;
+  }
+
+  .card:hover .image {
+    transform: none;
+  }
 }

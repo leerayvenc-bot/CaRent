@@ -1,0 +1,21 @@
+.rating {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  font: var(--font-small);
+  color: var(--color-muted);
+}
+
+.star {
+  color: var(--color-primary);
+}
+
+.score {
+  font-weight: 700;
+  color: var(--color-body);
+}
+
+.new {
+  font-weight: 600;
+  color: var(--color-body);
+}

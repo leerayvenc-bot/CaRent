@@ -1,0 +1,21 @@
+/* Grows with the number; never truncated */
+.tag {
+  display: inline-flex;
+  align-items: baseline;
+  gap: var(--space-1);
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-pill);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-card);
+  white-space: nowrap;
+}
+
+.amount {
+  font: var(--font-price);
+  color: var(--color-text);
+}
+
+.unit {
+  font: var(--font-caption);
+  color: var(--color-muted);
+}

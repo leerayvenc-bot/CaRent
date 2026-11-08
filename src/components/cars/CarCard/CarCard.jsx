@@ -3,118 +3,117 @@ import { Link } from "react-router-dom";
 import {
   MdAirlineSeatReclineNormal,
   MdDirectionsCar,
-  MdEco,
-  MdFavorite,
-  MdFavoriteBorder,
-  MdGroup,
-  MdInventory2,
+  MdEventAvailable,
   MdLocalGasStation,
   MdLocationOn,
-  MdOilBarrel,
   MdSettings,
-  MdStar,
-  MdTerrain,
-  MdWbSunny,
-  MdWeekend,
 } from "react-icons/md";
-import Badge from "../../common/Badge/Badge";
+import StatusBadge from "../StatusBadge/StatusBadge";
+import PriceTag from "../PriceTag/PriceTag";
+import FavoriteButton from "../FavoriteButton/FavoriteButton";
+import HostChip from "../HostChip/HostChip";
+import RatingSummary from "../../ratings/RatingSummary/RatingSummary";
 import { CAR_STATUS } from "../../../constants/carStatus";
-import { SPEC_TYPE } from "../../../constants/carFilters";
-import { formatPrice, formatRating } from "../../../utils/formatters";
+import { CAR_TYPE_OPTIONS, FUEL_OPTIONS, TRANSMISSION_OPTIONS } from "../../../constants/carFilters";
+import { formatDate, formatPrice, formatRating } from "../../../utils/formatters";
 import styles from "./CarCard.module.css";
 
-const SPEC_ICONS = {
-  [SPEC_TYPE.TRANSMISSION]: MdSettings,
-  [SPEC_TYPE.FUEL]: MdLocalGasStation,
-  [SPEC_TYPE.DIESEL]: MdOilBarrel,
-  [SPEC_TYPE.SEATS]: MdAirlineSeatReclineNormal,
-  [SPEC_TYPE.GROUP_SEATS]: MdGroup,
-  [SPEC_TYPE.CAPTAIN_SEATS]: MdWeekend,
-  [SPEC_TYPE.TERRAIN]: MdTerrain,
-  [SPEC_TYPE.CARGO]: MdInventory2,
-  [SPEC_TYPE.ROOF]: MdWbSunny,
-  [SPEC_TYPE.ECO]: MdEco,
-};
+const MISSING = "—";
+const labelFor = (options, value) => options.find((o) => o.value === value)?.label;
 
-const STATUS_LABEL = {
-  [CAR_STATUS.AVAILABLE]: "Available",
-  [CAR_STATUS.RENTED]: "Rented",
-};
+function rentedText(car) {
+  return car.available_from instanceof Date
+    ? `Available from ${formatDate(car.available_from)}`
+    : "Currently rented";
+}
 
-export default function CarCard({ car, detailPath, isSaved, onToggleSave }) {
+// Full summary for screen readers, read as the card link's name
+function describe(car, typeLabel, isRented) {
+  const parts = [car.model];
+  if (typeLabel) parts.push(typeLabel);
+  parts.push(`${formatPrice(car.price_per_day)} per day`);
+  parts.push(
+    car.rating_count
+      ? `${formatRating(car.avg_rating)} stars from ${car.rating_count} reviews`
+      : "new, no reviews yet"
+  );
+  parts.push(isRented ? `rented, ${rentedText(car).toLowerCase()}` : "available");
+  if (car.location) parts.push(car.location);
+  return parts.join(", ");
+}
+
+export default function CarCard({ car, detailPath, isFavorite, onFavorite }) {
   const [imageFailed, setImageFailed] = useState(false);
   const isRented = car.status === CAR_STATUS.RENTED;
+  const typeLabel = labelFor(CAR_TYPE_OPTIONS, car.car_type);
+  const eyebrow = [typeLabel, car.tag].filter(Boolean).join(" · ");
+  const showImage = car.photo_url && !imageFailed;
+
+  const specs = [
+    { Icon: MdSettings, text: labelFor(TRANSMISSION_OPTIONS, car.transmission) },
+    { Icon: MdLocalGasStation, text: labelFor(FUEL_OPTIONS, car.fuel) },
+    { Icon: MdAirlineSeatReclineNormal, text: car.seats ? `${car.seats} seats` : null },
+  ];
 
   return (
     <article className={`${styles.card} ${isRented ? styles.rented : ""}`}>
       <div className={styles.media}>
-        {imageFailed ? (
-          <div className={styles.imageFallback} aria-hidden="true">
-            <MdDirectionsCar size={48} />
-          </div>
-        ) : (
+        {showImage ? (
           <img
             className={styles.image}
-            src={car.imageUrl}
-            alt={car.title}
+            src={car.photo_url}
+            alt={car.model}
             loading="lazy"
             onError={() => setImageFailed(true)}
           />
+        ) : (
+          <div className={styles.placeholder} aria-hidden="true">
+            <MdDirectionsCar size={48} />
+          </div>
         )}
         <div className={styles.shade} aria-hidden="true" />
-
-        <div className={styles.topRow}>
-          <Badge variant={isRented ? "muted" : "active"}>{STATUS_LABEL[car.status]}</Badge>
-          <button
-            type="button"
-            className={`${styles.saveButton} ${isSaved ? styles.saved : ""}`}
-            aria-label={isSaved ? "Remove from saved" : "Save listing"}
-            aria-pressed={isSaved}
-            onClick={() => onToggleSave(car.id)}
-          >
-            {isSaved ? <MdFavorite size={18} /> : <MdFavoriteBorder size={18} />}
-          </button>
+        <div className={styles.badge}>
+          <StatusBadge status={car.status} />
         </div>
-
+        <div className={styles.favorite}>
+          <FavoriteButton active={isFavorite} onToggle={() => onFavorite(car.id)} label={car.model} />
+        </div>
         <div className={styles.price}>
-          <span className={styles.priceAmount}>{formatPrice(car.pricePerDay)}</span>
-          <span className={styles.priceUnit}>/day</span>
+          <PriceTag amount={car.price_per_day} />
         </div>
       </div>
 
       <div className={styles.body}>
-        <div>
-          <span className={styles.tagline}>{car.tagline}</span>
-          <h2 className={styles.title}>
-            <Link to={detailPath} className={styles.titleLink}>
-              {car.title}
-            </Link>
-          </h2>
-          <div className={styles.rating}>
-            <MdStar className={styles.star} size={14} aria-hidden="true" />
-            <span className={styles.ratingValue}>{formatRating(car.rating)}</span>
-            <span className={styles.ratingCount}>({car.ratingCount})</span>
-          </div>
-        </div>
+        {eyebrow && <p className={styles.eyebrow}>{eyebrow}</p>}
+        <h2 className={styles.title}>
+          <Link to={detailPath} className={styles.link} aria-label={describe(car, typeLabel, isRented)}>
+            {car.model}
+          </Link>
+        </h2>
+        <RatingSummary avg={car.avg_rating} count={car.rating_count} />
+
+        {isRented && (
+          <p className={styles.rentedNote}>
+            <MdEventAvailable size={16} aria-hidden="true" />
+            {rentedText(car)}
+          </p>
+        )}
 
         <ul className={styles.specs}>
-          {car.specs.map((spec) => {
-            const Icon = SPEC_ICONS[spec.type] ?? MdSettings;
-            return (
-              <li key={spec.label} className={styles.spec}>
-                <Icon size={16} aria-hidden="true" />
-                {spec.label}
-              </li>
-            );
-          })}
+          {specs.map(({ Icon, text }, i) => (
+            <li key={i} className={styles.spec}>
+              <Icon size={16} aria-hidden="true" />
+              {text ?? MISSING}
+            </li>
+          ))}
         </ul>
 
         <div className={styles.footer}>
-          <span className={styles.location}>
-            <MdLocationOn className={styles.pin} size={16} aria-hidden="true" />
-            <span className={styles.truncate}>{car.location}</span>
+          <span className={styles.location} title={car.location}>
+            <MdLocationOn size={16} aria-hidden="true" />
+            <span className={styles.locationText}>{car.location || MISSING}</span>
           </span>
-          <span className={styles.owner}>{car.ownerName}</span>
+          <HostChip name={car.owner_name} />
         </div>
       </div>
     </article>

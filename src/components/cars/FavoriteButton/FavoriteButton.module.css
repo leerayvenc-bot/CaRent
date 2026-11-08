@@ -1,0 +1,51 @@
+/* 44px tap area around a 32px visible circle */
+.button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--target-min);
+  height: var(--target-min);
+  padding: 0;
+  border: none;
+  border-radius: var(--radius-pill);
+  background: transparent;
+  cursor: pointer;
+}
+
+.circle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-pill);
+  background: var(--color-surface);
+  color: var(--color-body);
+  box-shadow: var(--shadow-card);
+}
+
+.button:focus-visible {
+  outline: none;
+}
+
+.button:focus-visible .circle {
+  outline: 2px solid var(--color-text);
+  outline-offset: 2px;
+}
+
+.active .circle {
+  color: var(--color-accent);
+  animation: pop 200ms ease-out;
+}
+
+@keyframes pop {
+  50% {
+    transform: scale(1.2);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .active .circle {
+    animation: none;
+  }
+}

@@ -1,0 +1,17 @@
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius-pill);
+  font: var(--font-caption);
+}
+
+.available {
+  background: var(--color-accent-soft);
+  color: var(--color-body);
+}
+
+.rented {
+  background: var(--color-rented);
+  color: var(--color-surface);
+}
