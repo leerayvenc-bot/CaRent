@@ -1,0 +1,52 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  padding: var(--space-6);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-card);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-card);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-4) var(--space-4);
+}
+
+/* Fields that take the full row */
+.wide {
+  grid-column: 1 / -1;
+  min-width: 0;
+}
+
+.formError {
+  margin: 0;
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid var(--color-error);
+  border-radius: var(--radius-control);
+  color: var(--color-error);
+  font: var(--font-body-strong);
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-3);
+}
+
+/* Phone: one column, buttons stack with Save on top */
+@media (max-width: 639px) {
+  .form {
+    padding: var(--space-4);
+  }
+
+  .grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .actions {
+    flex-direction: column-reverse;
+  }
+}
