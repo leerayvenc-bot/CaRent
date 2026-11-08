@@ -49,3 +49,13 @@ export function validateLoginForm({ email, password }) {
     password: password ? "" : "Password is required.",
   });
 }
+export const MAX_MESSAGE_LENGTH = 500;
+
+export function validateMessage(text) {
+  const trimmed = text.trim();
+  if (!trimmed) return "Message can't be empty.";
+  if (trimmed.length > MAX_MESSAGE_LENGTH) {
+    return `Message must be ${MAX_MESSAGE_LENGTH} characters or less.`;
+  }
+  return "";
+}

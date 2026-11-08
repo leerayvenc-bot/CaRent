@@ -1,0 +1,17 @@
+html,
+body,
+#root {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  display: block;
+}
+
+#root {
+  display: block;
+  max-width: none;
+  text-align: left;
+}
