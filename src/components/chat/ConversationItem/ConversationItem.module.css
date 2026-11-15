@@ -1,0 +1,145 @@
+.item {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  width: 100%;
+  padding: var(--space-3);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-card);
+  background: var(--color-surface);
+  color: var(--color-body);
+  text-align: left;
+  cursor: pointer;
+  transition: border-color var(--motion-fast) ease-out, box-shadow var(--motion-fast) ease-out;
+}
+
+.item:hover {
+  border-color: var(--color-text);
+  box-shadow: var(--shadow-card);
+}
+
+.item:focus-visible {
+  outline: 2px solid var(--color-text);
+  outline-offset: 2px;
+}
+
+.active {
+  border: 2px solid var(--color-text);
+  padding: calc(var(--space-3) - 1px);
+}
+
+.avatar {
+  display: grid;
+  place-items: center;
+  flex: 0 0 44px;
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-pill);
+  background: var(--color-bg);
+  color: var(--color-body);
+  font: var(--font-body-strong);
+}
+
+.unreadDot {
+  position: absolute;
+  top: var(--space-2);
+  left: 48px;
+  width: 10px;
+  height: 10px;
+  border: 2px solid var(--color-surface);
+  border-radius: var(--radius-pill);
+  background: var(--color-accent);
+}
+
+.content {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: var(--space-2);
+  min-width: 0;
+}
+
+.top {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-width: 0;
+}
+
+.name {
+  overflow: hidden;
+  font: var(--font-body-strong);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.time {
+  flex: 0 0 auto;
+  margin-left: auto;
+  color: var(--color-muted);
+  font: var(--font-caption);
+}
+
+.car {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-width: 0;
+  padding: var(--space-2);
+  border-radius: var(--radius-control);
+  background: var(--color-bg);
+}
+
+.thumbnail,
+.thumbnailFallback {
+  display: grid;
+  place-items: center;
+  flex: 0 0 48px;
+  width: 48px;
+  height: 42px;
+  border-radius: var(--radius-control);
+  background: var(--color-placeholder);
+  object-fit: cover;
+  color: var(--color-muted);
+}
+
+.carDetails {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.model {
+  overflow: hidden;
+  font: var(--font-body-strong);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.price {
+  color: var(--color-text);
+  font: var(--font-body-strong);
+  white-space: nowrap;
+}
+
+.pickup {
+  max-width: 92px;
+  overflow: hidden;
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius-control);
+  background: var(--color-placeholder);
+  color: var(--color-body);
+  font: var(--font-caption);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.preview {
+  overflow: hidden;
+  color: var(--color-muted);
+  font: var(--font-body);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

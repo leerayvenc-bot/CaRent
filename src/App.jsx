@@ -12,7 +12,7 @@ export default function App() {
 
   return (
     <LoginPromptProvider>
-      <div>
+      <div className={pathname.startsWith(`${ROUTES.INBOX}/`) ? "chat-route" : undefined}>
         {showNavbar && <Navbar />}
         <AppRouter />
       </div>
