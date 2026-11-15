@@ -1,0 +1,68 @@
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  min-width: 0;
+}
+
+.label {
+  font: var(--font-caption);
+  color: var(--color-muted);
+}
+
+.optional {
+  font-weight: 400;
+}
+
+.control {
+  box-sizing: border-box; /* reset.css is empty, so inputs would overflow their column */
+  width: 100%;
+  min-height: var(--target-min);
+  padding: 0 var(--space-3);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-control);
+  background: var(--color-surface);
+  color: var(--color-body);
+  font: var(--font-body);
+}
+
+textarea.control {
+  min-height: calc(var(--target-min) * 2.5);
+  padding: var(--space-3);
+  resize: vertical;
+}
+
+select.control {
+  cursor: pointer;
+}
+
+.control::placeholder {
+  color: var(--color-muted);
+}
+
+.control:hover {
+  border-color: var(--color-muted);
+}
+
+.control:focus-visible {
+  outline: 2px solid var(--color-text);
+  outline-offset: 2px;
+}
+
+.invalid .control {
+  border-color: var(--color-error);
+}
+
+.hint,
+.error {
+  margin: 0;
+  font: var(--font-small);
+}
+
+.hint {
+  color: var(--color-muted);
+}
+
+.error {
+  color: var(--color-error);
+}

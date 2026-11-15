@@ -8,6 +8,7 @@ import Login from "../pages/Login";
 import Register from "../pages/Register";
 import BrowsePage from "../pages/BrowsePage/BrowsePage";
 import MessagesPage from "../pages/MessagesPage/MessagesPage";
+import CreateListingPage from "../pages/CreateListingPage/CreateListingPage";
 
 // Temporary stand-in.
 function Placeholder({ name }) {
@@ -60,7 +61,7 @@ export default function AppRouter() {
 
       {/* Logged-in users only: guests get redirected away */}
       <Route element={<RequireLogin />}>
-        <Route path={ROUTES.CREATE_LISTING} element={<Placeholder name="Create listing" />} />
+        <Route path={ROUTES.CREATE_LISTING} element={<CreateListingPage />} />
         <Route path={ROUTES.EDIT_LISTING} element={<Placeholder name="Edit listing" />} />
         <Route path={ROUTES.MY_LISTINGS} element={<Placeholder name="My listings" />} />
         <Route path={ROUTES.SAVED} element={<Placeholder name="Saved" />} />
