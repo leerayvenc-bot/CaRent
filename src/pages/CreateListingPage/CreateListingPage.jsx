@@ -1,7 +1,7 @@
 import CarForm from "../../components/cars/CarForm/CarForm";
 import { useCreateCar } from "../../hooks/useCreateCar";
 import { ROUTES } from "../../constants/routePaths";
-import styles from "./CreateListingPage.module.css";
+import styles from "./CreateListing.module.css";
 
 export default function CreateListingPage() {
   const { create, submitting, error } = useCreateCar();

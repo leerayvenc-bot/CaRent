@@ -151,11 +151,11 @@ Empty folders are kept with a `.gitkeep` file. You can delete the `.gitkeep` onc
 - Route and car status constants, form validators
 - `authService`, `AuthProvider`, `useAuth`
 - `ProtectedRoute` and `Spinner`
+- Chat and Inbox UI (live Firestore chat backend)
 
 **Next**
 - `AppRouter`, Login and Register pages
 - Browse page, car listings (create, read, update, delete)
-- Chat and Inbox
 - Ratings
 - Listing photos (storage decision)
 - Deployment to Firebase Hosting

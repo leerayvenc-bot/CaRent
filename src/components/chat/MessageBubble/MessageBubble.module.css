@@ -1,0 +1,70 @@
+.row {
+  display: flex;
+  align-items: flex-end;
+  gap: var(--space-2);
+  width: 100%;
+}
+
+.theirs {
+  justify-content: flex-start;
+}
+
+.mine {
+  justify-content: flex-end;
+}
+
+.avatar {
+  display: grid;
+  flex: 0 0 32px;
+  width: 32px;
+  height: 32px;
+  place-items: center;
+  border-radius: var(--radius-pill);
+  background: var(--color-bg);
+  color: var(--color-body);
+  font: var(--font-caption);
+}
+
+.message {
+  display: flex;
+  flex-direction: column;
+  max-width: min(78%, 560px);
+  gap: var(--space-1);
+}
+
+.mine .message {
+  align-items: flex-end;
+}
+
+.bubble {
+  margin: 0;
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-card);
+  background: var(--color-surface);
+  color: var(--color-body);
+  font: var(--font-body);
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}
+
+.mine .bubble {
+  border-color: var(--color-accent-soft);
+  background: var(--color-accent-soft);
+}
+
+.time {
+  color: var(--color-muted);
+  font: var(--font-caption);
+}
+
+@media (max-width: 899px) {
+  .message {
+    max-width: 86%;
+  }
+
+  .bubble {
+    padding: var(--space-4);
+    font: var(--font-body);
+  }
+}
