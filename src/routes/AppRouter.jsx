@@ -9,6 +9,7 @@ import Register from "../pages/Register";
 import BrowsePage from "../pages/BrowsePage/BrowsePage";
 import MessagesPage from "../pages/MessagesPage/MessagesPage";
 import CreateListingPage from "../pages/CreateListingPage/CreateListingPage";
+import SavedPage from "../pages/SavedPage/SavedPage";
 
 // Temporary stand-in.
 function Placeholder({ name }) {
@@ -64,7 +65,7 @@ export default function AppRouter() {
         <Route path={ROUTES.CREATE_LISTING} element={<CreateListingPage />} />
         <Route path={ROUTES.EDIT_LISTING} element={<Placeholder name="Edit listing" />} />
         <Route path={ROUTES.MY_LISTINGS} element={<Placeholder name="My listings" />} />
-        <Route path={ROUTES.SAVED} element={<Placeholder name="Saved" />} />
+        <Route path={ROUTES.SAVED} element={<SavedPage />} />
         <Route path={ROUTES.INBOX} element={<MessagesPage />} />
         <Route path={ROUTES.CHAT} element={<MessagesPage />} />
       </Route>

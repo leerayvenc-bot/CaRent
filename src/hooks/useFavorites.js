@@ -1,28 +1,36 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useAuth } from "./useAuth";
-import { addFavorite, getFavoriteIds, removeFavorite } from "../services/favoritesService";
+import {
+  addFavorite,
+  clearFavorites,
+  getFavorites,
+  removeFavorite,
+} from "../services/favoritesService";
 
 const SAVE_ERROR = "Couldn't save. Try again.";
-const NO_FAVORITES = new Set();
+const NO_FAVORITES = new Map();
 
-// The logged-in user's saved cars, with an optimistic toggle.
+// The logged-in user's saved cars (carId -> savedAt), with an optimistic toggle.
 export function useFavorites() {
   const { user } = useAuth();
   const uid = user?.uid ?? null;
   // Remember whose favorites these are, so a different user never sees them.
-  const [saved, setSaved] = useState({ uid: null, ids: NO_FAVORITES });
+  const [saved, setSaved] = useState({ uid: null, items: NO_FAVORITES });
   const [error, setError] = useState("");
 
   useEffect(() => {
     if (!uid) return undefined;
     let ignore = false;
 
-    getFavoriteIds(uid)
-      .then((ids) => {
-        if (!ignore) setSaved({ uid, ids: new Set(ids) });
+    getFavorites(uid)
+      .then((list) => {
+        if (!ignore) {
+          setSaved({ uid, items: new Map(list.map((f) => [f.carId, f.savedAt])) });
+        }
       })
       .catch(() => {
         // Hearts just start empty; saving still works.
+        if (!ignore) setSaved({ uid, items: new Map() });
       });
 
     return () => {
@@ -30,15 +38,17 @@ export function useFavorites() {
     };
   }, [uid]);
 
-  const favoriteIds = saved.uid === uid && uid ? saved.ids : NO_FAVORITES;
+  const ready = Boolean(uid) && saved.uid === uid;
+  const items = ready ? saved.items : NO_FAVORITES;
+  const favoriteIds = useMemo(() => new Set(items.keys()), [items]);
 
   const setOne = useCallback(
-    (carId, isSaved) => {
+    (carId, isSaved, savedAt = new Date()) => {
       setSaved((prev) => {
-        const ids = new Set(prev.uid === uid ? prev.ids : []);
-        if (isSaved) ids.add(carId);
-        else ids.delete(carId);
-        return { uid, ids };
+        const next = new Map(prev.uid === uid ? prev.items : []);
+        if (isSaved) next.set(carId, savedAt);
+        else next.delete(carId);
+        return { uid, items: next };
       });
     },
     [uid]
@@ -47,20 +57,33 @@ export function useFavorites() {
   const toggleFavorite = useCallback(
     async (carId) => {
       if (!uid) return;
-      const willSave = !favoriteIds.has(carId);
+      const willSave = !items.has(carId);
+      const previous = items.get(carId);
       setOne(carId, willSave); // update the heart right away
       try {
         if (willSave) await addFavorite(uid, carId);
         else await removeFavorite(uid, carId);
       } catch {
-        setOne(carId, !willSave); // put it back
+        setOne(carId, !willSave, previous); // put it back
         setError(SAVE_ERROR);
       }
     },
-    [uid, favoriteIds, setOne]
+    [uid, items, setOne]
   );
+
+  const clearAll = useCallback(async () => {
+    if (!uid) return;
+    const previous = items;
+    setSaved({ uid, items: new Map() });
+    try {
+      await clearFavorites(uid, [...previous.keys()]);
+    } catch {
+      setSaved({ uid, items: previous }); // put everything back
+      setError(SAVE_ERROR);
+    }
+  }, [uid, items]);
 
   const clearError = useCallback(() => setError(""), []);
 
-  return { favoriteIds, toggleFavorite, error, clearError };
+  return { favoriteIds, savedAt: items, ready, toggleFavorite, clearAll, error, clearError };
 }

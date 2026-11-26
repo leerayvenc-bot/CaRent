@@ -15,6 +15,7 @@ export default function CarGrid({
   city,
   favoriteIds,
   onFavorite,
+  onMessage,
   onClear,
   onRetry,
   getDetailPath,
@@ -54,6 +55,7 @@ export default function CarGrid({
             detailPath={getDetailPath(car.id)}
             isFavorite={favoriteIds.has(car.id)}
             onFavorite={onFavorite}
+            onMessage={onMessage}
           />
         </li>
       ))}
