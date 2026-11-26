@@ -10,6 +10,7 @@ import BrowsePage from "../pages/BrowsePage/BrowsePage";
 import MessagesPage from "../pages/MessagesPage/MessagesPage";
 import CreateListingPage from "../pages/CreateListingPage/CreateListingPage";
 import SavedPage from "../pages/SavedPage/SavedPage";
+import ListingDetailPage from "../pages/ListingDetailPage/ListingDetailPage";
 
 // Temporary stand-in.
 function Placeholder({ name }) {
@@ -52,7 +53,7 @@ export default function AppRouter() {
 
       {/* Public: guests can see these */}
       <Route path={ROUTES.BROWSE} element={<BrowsePage />} />
-      <Route path={ROUTES.LISTING} element={<Placeholder name="Listing detail" />} />
+      <Route path={ROUTES.LISTING} element={<ListingDetailPage />} />
 
       {/* Guests only: logged-in users get redirected away */}
       <Route element={<GuestOnly />}>
