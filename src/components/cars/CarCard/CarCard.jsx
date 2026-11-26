@@ -12,6 +12,7 @@ import StatusBadge from "../StatusBadge/StatusBadge";
 import PriceTag from "../PriceTag/PriceTag";
 import FavoriteButton from "../FavoriteButton/FavoriteButton";
 import HostChip from "../HostChip/HostChip";
+import Button from "../../common/Button/Button";
 import RatingSummary from "../../ratings/RatingSummary/RatingSummary";
 import { CAR_STATUS } from "../../../constants/carStatus";
 import { CAR_TYPE_OPTIONS, FUEL_OPTIONS, TRANSMISSION_OPTIONS } from "../../../constants/carFilters";
@@ -42,7 +43,7 @@ function describe(car, typeLabel, isRented) {
   return parts.join(", ");
 }
 
-export default function CarCard({ car, detailPath, isFavorite, onFavorite }) {
+export default function CarCard({ car, detailPath, isFavorite, onFavorite, onMessage }) {
   const [imageFailed, setImageFailed] = useState(false);
   const isRented = car.status === CAR_STATUS.RENTED;
   const typeLabel = labelFor(CAR_TYPE_OPTIONS, car.car_type);
@@ -115,6 +116,14 @@ export default function CarCard({ car, detailPath, isFavorite, onFavorite }) {
           </span>
           <HostChip name={car.owner_name} />
         </div>
+
+        {onMessage && (
+          <div className={styles.actions}>
+            <Button variant="secondary" onClick={() => onMessage(car)}>
+              Message owner
+            </Button>
+          </div>
+        )}
       </div>
     </article>
   );

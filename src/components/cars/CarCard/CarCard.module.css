@@ -186,6 +186,9 @@
   text-overflow: ellipsis;
 }
 
+.actions { margin-top: var(--space-4); }
+.actions > * { width: 100%; }
+
 @media (prefers-reduced-motion: reduce) {
   .card,
   .image {
