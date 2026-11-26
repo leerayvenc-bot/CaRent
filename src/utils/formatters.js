@@ -53,3 +53,20 @@ export function getInitials(fullName = "") {
 export function pluralize(count, singular, plural = `${singular}s`) {
   return `${count} ${count === 1 ? singular : plural}`;
 }
+
+const TIME_UNITS = [
+  { unit: "year", seconds: 365 * 24 * 60 * 60 },
+  { unit: "month", seconds: 30 * 24 * 60 * 60 },
+  { unit: "week", seconds: 7 * 24 * 60 * 60 },
+  { unit: "day", seconds: 24 * 60 * 60 },
+  { unit: "hour", seconds: 60 * 60 },
+  { unit: "minute", seconds: 60 },
+];
+
+// "just now", "5 minutes ago", "2 days ago", "3 months ago"
+export function formatTimeAgo(date, now = new Date()) {
+  const elapsed = Math.max(0, (now.getTime() - date.getTime()) / 1000);
+  const match = TIME_UNITS.find(({ seconds }) => elapsed >= seconds);
+  if (!match) return "just now";
+  return `${pluralize(Math.floor(elapsed / match.seconds), match.unit)} ago`;
+}
