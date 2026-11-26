@@ -1,0 +1,129 @@
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  min-width: 0;
+}
+
+.label {
+  font: var(--font-caption);
+  color: var(--color-muted);
+}
+
+/* Hidden but still focusable, so the form can jump to it on errors */
+.input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  border: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.dropzone {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  width: 100%;
+  min-height: 160px;
+  padding: var(--space-6);
+  border: 2px dashed var(--color-border);
+  border-radius: var(--radius-control);
+  background: var(--color-surface);
+  color: var(--color-muted);
+  text-align: center;
+  cursor: pointer;
+  transition: background var(--motion-base) ease-out,
+    border-color var(--motion-base) ease-out;
+}
+
+.dropzone:hover {
+  border-color: var(--color-muted);
+}
+
+.dragging,
+.dragging:hover {
+  border-color: var(--color-text);
+  background: var(--color-accent-soft);
+  color: var(--color-body);
+}
+
+.dropzone:has(.input:focus-visible),
+.dropzone:focus-within {
+  outline: 2px solid var(--color-text);
+  outline-offset: 2px;
+}
+
+.invalid .dropzone {
+  border-color: var(--color-error);
+}
+
+.icon {
+  font-size: 32px;
+}
+
+.title {
+  font: var(--font-body-strong);
+  color: var(--color-body);
+}
+
+.dropHint {
+  font: var(--font-small);
+}
+
+.preview {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.frame {
+  width: 100%;
+  max-width: 360px;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.actionButton {
+  min-height: var(--target-min);
+  padding: 0 var(--space-4);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-control);
+  background: var(--color-surface);
+  color: var(--color-body);
+  font: var(--font-body-strong);
+  cursor: pointer;
+}
+
+.actionButton:hover {
+  border-color: var(--color-muted);
+}
+
+.actionButton:focus-visible {
+  outline: 2px solid var(--color-text);
+  outline-offset: 2px;
+}
+
+.hint,
+.error {
+  margin: 0;
+  font: var(--font-small);
+}
+
+.hint {
+  color: var(--color-muted);
+}
+
+.error {
+  color: var(--color-error);
+}
