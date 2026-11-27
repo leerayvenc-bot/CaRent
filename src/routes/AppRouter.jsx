@@ -11,6 +11,9 @@ import MessagesPage from "../pages/MessagesPage/MessagesPage";
 import CreateListingPage from "../pages/CreateListingPage/CreateListingPage";
 import SavedPage from "../pages/SavedPage/SavedPage";
 import ListingDetailPage from "../pages/ListingDetailPage/ListingDetailPage";
+import ProfilePage from "../pages/ProfilePage/ProfilePage";
+import EditProfilePage from "../pages/EditProfilePage/EditProfilePage";
+import UserProfilePage from "../pages/UserProfilePage/UserProfilePage";
 
 // Temporary stand-in.
 function Placeholder({ name }) {
@@ -54,6 +57,7 @@ export default function AppRouter() {
       {/* Public: guests can see these */}
       <Route path={ROUTES.BROWSE} element={<BrowsePage />} />
       <Route path={ROUTES.LISTING} element={<ListingDetailPage />} />
+      <Route path={ROUTES.USER_PROFILE} element={<UserProfilePage />} />
 
       {/* Guests only: logged-in users get redirected away */}
       <Route element={<GuestOnly />}>
@@ -69,6 +73,8 @@ export default function AppRouter() {
         <Route path={ROUTES.SAVED} element={<SavedPage />} />
         <Route path={ROUTES.INBOX} element={<MessagesPage />} />
         <Route path={ROUTES.CHAT} element={<MessagesPage />} />
+        <Route path={ROUTES.PROFILE} element={<ProfilePage />} />
+        <Route path={ROUTES.EDIT_PROFILE} element={<EditProfilePage />} />
       </Route>
 
       {/* Anything else */}

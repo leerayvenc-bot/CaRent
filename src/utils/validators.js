@@ -174,3 +174,36 @@ export function validateMessage(text) {
   }
   return "";
 }
+
+// ---- Edit profile form ----
+export const MAX_NAME_LENGTH = 60;
+export const MAX_CITY_LENGTH = 40;
+export const MAX_BIO_LENGTH = 300;
+
+export function validateProfileForm({ name, city, bio, photo }) {
+  const trimmedName = name.trim();
+  return collectErrors({
+    photo: validateProfilePhoto(photo),
+    name: !trimmedName
+      ? "Full name is required."
+      : trimmedName.length > MAX_NAME_LENGTH
+        ? `Keep your name under ${MAX_NAME_LENGTH} characters.`
+        : "",
+    city:
+      city.trim().length > MAX_CITY_LENGTH
+        ? `Keep the city under ${MAX_CITY_LENGTH} characters.`
+        : "",
+    bio:
+      bio.trim().length > MAX_BIO_LENGTH
+        ? `Keep your bio under ${MAX_BIO_LENGTH} characters.`
+        : "",
+  });
+}
+
+// The profile photo is optional, so no file is fine
+export function validateProfilePhoto(file) {
+  if (!file) return "";
+  if (!PHOTO_TYPES.includes(file.type)) return "Photo must be a JPG, PNG, or WebP image.";
+  if (file.size > MAX_PHOTO_MB * 1024 * 1024) return `Photo must be ${MAX_PHOTO_MB} MB or smaller.`;
+  return "";
+}

@@ -9,6 +9,7 @@ import {
 } from "firebase/auth";
 import { doc, getDoc, setDoc, serverTimestamp } from "firebase/firestore";
 import { auth, db } from "../config/firebase";
+import { deletePhotoByUrl, uploadProfilePhoto } from "./photoService";
 
 const USERS_COLLECTION = "users";
 
@@ -31,13 +32,36 @@ function toFriendlyError(error) {
   return new Error(message || "Something went wrong. Please try again.");
 }
 
+const PROFILE_SAVE_ERROR = "Couldn't save your profile. Please try again.";
+
+function toDate(value) {
+  if (value instanceof Date) return value;
+  return typeof value?.toDate === "function" ? value.toDate() : null;
+}
+
 // The user object the rest of the app sees (no Firebase types leak out)
 function toProfile(uid, data) {
-  return { uid, name: data.name, email: data.email };
+  return {
+    uid,
+    name: data.name ?? "",
+    email: data.email,
+    city: data.city ?? "",
+    bio: data.bio ?? "",
+    photo_url: data.photo_url ?? "",
+    created_at: toDate(data.created_at),
+  };
 }
 
 function fallbackProfile(user) {
-  return { uid: user.uid, name: user.displayName || "", email: user.email };
+  return {
+    uid: user.uid,
+    name: user.displayName || "",
+    email: user.email,
+    city: "",
+    bio: "",
+    photo_url: user.photoURL || "",
+    created_at: user.metadata?.creationTime ? new Date(user.metadata.creationTime) : null,
+  };
 }
 
 // True while register() is running, so the listener doesn't read a half-made profile
@@ -72,7 +96,7 @@ export async function register({ name, email, password }) {
       throw error;
     }
 
-    return toProfile(user.uid, profileData);
+    return toProfile(user.uid, { ...profileData, created_at: new Date() });
   } catch (error) {
     throw toFriendlyError(error);
   } finally {
@@ -104,6 +128,44 @@ export async function resetPassword(email) {
   } catch (error) {
     throw toFriendlyError(error);
   }
+}
+
+// Saves the fields a user can edit on the Edit profile page and returns the new profile.
+// values: { name, city, bio, photo, removePhoto, photo_url }
+//   photo        a new File to upload, or null to keep the current one
+//   removePhoto  true to go back to initials
+//   photo_url    the photo saved before this edit ("" if none)
+export async function updateUserProfile(uid, values) {
+  const oldPhotoUrl = values.photo_url ?? "";
+  let photoUrl = oldPhotoUrl;
+  if (values.photo) photoUrl = await uploadProfilePhoto(values.photo);
+  else if (values.removePhoto) photoUrl = "";
+
+  const changes = {
+    name: values.name.trim(),
+    city: values.city?.trim() ?? "",
+    bio: values.bio?.trim() ?? "",
+    photo_url: photoUrl,
+  };
+  try {
+    // merge: also works for older accounts whose profile document is missing
+    await setDoc(doc(db, USERS_COLLECTION, uid), changes, { merge: true });
+    if (auth.currentUser?.uid === uid) {
+      await updateProfile(auth.currentUser, {
+        displayName: changes.name,
+        photoURL: photoUrl || null,
+      });
+    }
+  } catch (error) {
+    console.error(error);
+    if (values.photo) deletePhotoByUrl(photoUrl); // don't leave an unused upload behind
+    throw new Error(PROFILE_SAVE_ERROR, { cause: error });
+  }
+  // The old photo isn't used anymore once it's replaced or removed
+  if (photoUrl !== oldPhotoUrl) deletePhotoByUrl(oldPhotoUrl);
+
+  const profile = await getUserProfile(uid).catch(() => null);
+  return profile ?? { uid, ...changes };
 }
 
 // AuthContext uses this, so it never imports Firebase itself.
