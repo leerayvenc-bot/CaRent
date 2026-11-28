@@ -103,8 +103,36 @@
 
 .ownerText {
   display: flex;
+  flex: 1;
   flex-direction: column;
   min-width: 0;
+}
+
+/* The Owner box as a link to their profile */
+.ownerLink {
+  border: 1px solid transparent;
+  color: inherit;
+  text-decoration: none;
+  transition: border-color var(--motion-base) ease-out, background var(--motion-base) ease-out;
+}
+
+.ownerLink:hover {
+  border-color: var(--color-border);
+  background: var(--color-surface);
+}
+
+.ownerLink:hover .ownerName {
+  color: var(--color-link);
+}
+
+.ownerLink:focus-visible {
+  outline: 2px solid var(--color-text);
+  outline-offset: 2px;
+}
+
+.ownerArrow {
+  flex-shrink: 0;
+  color: var(--color-muted);
 }
 
 .ownerLabel {

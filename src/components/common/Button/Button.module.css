@@ -50,6 +50,17 @@
   cursor: progress;
 }
 
+/* Lines an icon up with the text's middle, with a small gap between them */
+.label {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.label > svg {
+  flex: none;
+}
+
 /* Keep the label in place (invisible) so the width stays fixed while loading */
 .loading .label {
   visibility: hidden;

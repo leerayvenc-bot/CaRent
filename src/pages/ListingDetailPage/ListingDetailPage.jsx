@@ -15,6 +15,7 @@ import { useCar } from "../../hooks/useCar";
 import { useFavorites } from "../../hooks/useFavorites";
 import { useLoginPrompt } from "../../hooks/useLoginPrompt";
 import { useStartChat } from "../../hooks/useStartChat";
+import { useUserProfile } from "../../hooks/useUserProfile";
 import { buildPath, ROUTES } from "../../constants/routePaths";
 import { FILTER_PARAM } from "../../constants/carFilters";
 import { LOAD_STATUS } from "../../constants/loadStatus";
@@ -27,6 +28,8 @@ const LINK_COPY_FAILED = "Couldn't copy the link. Copy it from the address bar."
 export default function ListingDetailPage() {
   const { carId } = useParams();
   const { car, status, error, retry } = useCar(carId);
+  // Only for the owner's photo; if it can't load, the Owner box shows initials
+  const { profile: owner } = useUserProfile(car?.owner_id);
   const { user } = useAuth();
   const { requireLogin } = useLoginPrompt();
   const { favoriteIds, toggleFavorite, error: saveError, clearError } = useFavorites();
@@ -135,6 +138,8 @@ export default function ListingDetailPage() {
               car={car}
               isOwner={isOwner}
               editPath={buildPath.editListing(car.id)}
+              ownerPath={car.owner_id ? buildPath.userProfile(car.owner_id) : undefined}
+              ownerPhotoUrl={owner?.photo_url}
               saved={saved}
               onToggleSave={handleToggleSave}
               onMessage={() => startChat(car)}

@@ -1,5 +1,7 @@
+import { Link } from "react-router-dom";
 import {
   MdChatBubbleOutline,
+  MdChevronRight,
   MdEdit,
   MdEventAvailable,
   MdFavorite,
@@ -12,18 +14,20 @@ import Button from "../../common/Button/Button";
 import StatusBadge from "../StatusBadge/StatusBadge";
 import SpecTiles from "../SpecTiles/SpecTiles";
 import RatingSummary from "../../ratings/RatingSummary/RatingSummary";
+import Avatar from "../../profile/Avatar/Avatar";
 import { CAR_STATUS } from "../../../constants/carStatus";
 import { carTypeLabel, rentedText } from "../../../utils/carLabels";
 import {
   formatHostName,
   formatPrice,
   formatTimeAgo,
-  getInitials,
 } from "../../../utils/formatters";
 import styles from "./ListingPanel.module.css";
 
 // The card beside the photo on the Listing detail page.
 //   isOwner        true when the viewer posted this car (Edit instead of Message/Save)
+//   ownerPath      the owner's public profile; the Owner box links there when given
+//   ownerPhotoUrl  the owner's profile photo ("" shows their initials)
 //   saved          true when the viewer has this car in Saved
 //   onToggleSave   called when the Save button is clicked
 //   onMessage      called when "Is this still available?" is clicked
@@ -34,6 +38,8 @@ export default function ListingPanel({
   car,
   isOwner,
   editPath,
+  ownerPath,
+  ownerPhotoUrl = "",
   saved,
   onToggleSave,
   onMessage,
@@ -84,15 +90,16 @@ export default function ListingPanel({
         )}
       </ul>
 
-      <div className={styles.owner}>
-        <span className={styles.avatar} aria-hidden="true">
-          {getInitials(car.owner_name)}
-        </span>
-        <span className={styles.ownerText}>
-          <span className={styles.ownerLabel}>Owner</span>
-          <span className={styles.ownerName}>{formatHostName(car.owner_name)}</span>
-        </span>
-      </div>
+      {ownerPath ? (
+        <Link to={ownerPath} className={`${styles.owner} ${styles.ownerLink}`}>
+          <OwnerDetails name={car.owner_name} photoUrl={ownerPhotoUrl} />
+          <MdChevronRight size={22} className={styles.ownerArrow} aria-hidden="true" />
+        </Link>
+      ) : (
+        <div className={styles.owner}>
+          <OwnerDetails name={car.owner_name} photoUrl={ownerPhotoUrl} />
+        </div>
+      )}
 
       <div className={styles.actions}>
         {isOwner ? (
@@ -137,5 +144,17 @@ export default function ListingPanel({
         </p>
       )}
     </section>
+  );
+}
+
+function OwnerDetails({ name, photoUrl }) {
+  return (
+    <>
+      <Avatar name={name} src={photoUrl} className={styles.avatar} />
+      <span className={styles.ownerText}>
+        <span className={styles.ownerLabel}>Owner</span>
+        <span className={styles.ownerName}>{formatHostName(name)}</span>
+      </span>
+    </>
   );
 }

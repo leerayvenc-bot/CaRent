@@ -70,3 +70,8 @@ export function formatTimeAgo(date, now = new Date()) {
   if (!match) return "just now";
   return `${pluralize(Math.floor(elapsed / match.seconds), match.unit)} ago`;
 }
+
+// Date -> "March 2025"
+export function formatMonthYear(date) {
+  return date.toLocaleDateString("en-US", { month: "long", year: "numeric" });
+}

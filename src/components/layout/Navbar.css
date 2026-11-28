@@ -137,6 +137,10 @@
 }
 
 .navbar-avatar {
+  overflow: hidden;
+  padding: 0;
+  font-family: inherit; /* buttons use the browser's font by default */
+  line-height: 1; /* centers the initial vertically */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -149,6 +153,13 @@
   font-size: 0.95rem;
   font-weight: 700;
   cursor: pointer;
+}
+
+.navbar-avatar-img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
 }
 
 .navbar-avatar:hover {
@@ -184,6 +195,7 @@
 }
 
 .navbar-dropdown-item {
+  box-sizing: border-box; /* keeps the hover background inside the menu */
   display: flex;
   align-items: center;
   gap: 8px;
@@ -196,6 +208,7 @@
   color: #1f2937;
   font-size: 0.85rem;
   font-weight: 600;
+  text-decoration: none;
   cursor: pointer;
 }
 

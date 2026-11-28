@@ -96,6 +96,9 @@ export async function getCarById(carId) {
 
 // One user's listings, newest first.
 export async function getCarsByOwner(uid) {
+  if (USE_SAMPLE_CARS)
+    return (await getSampleCars()).filter((c) => c.owner_id === uid);
+
   try {
     const snapshot = await getDocs(
       query(collection(db, CARS_COLLECTION), where("owner_id", "==", uid)),
