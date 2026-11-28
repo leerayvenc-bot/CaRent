@@ -11,14 +11,11 @@ import MessagesPage from "../pages/MessagesPage/MessagesPage";
 import CreateListingPage from "../pages/CreateListingPage/CreateListingPage";
 import SavedPage from "../pages/SavedPage/SavedPage";
 import ListingDetailPage from "../pages/ListingDetailPage/ListingDetailPage";
+import MyListingsPage from "../pages/MyListingsPage/MyListingsPage";
+import EditListingPage from "../pages/EditListingPage/EditListingPage";
 import ProfilePage from "../pages/ProfilePage/ProfilePage";
 import EditProfilePage from "../pages/EditProfilePage/EditProfilePage";
 import UserProfilePage from "../pages/UserProfilePage/UserProfilePage";
-
-// Temporary stand-in.
-function Placeholder({ name }) {
-  return <h1>{name} (coming soon)</h1>;
-}
 
 function NotFound() {
   return (
@@ -68,8 +65,8 @@ export default function AppRouter() {
       {/* Logged-in users only: guests get redirected away */}
       <Route element={<RequireLogin />}>
         <Route path={ROUTES.CREATE_LISTING} element={<CreateListingPage />} />
-        <Route path={ROUTES.EDIT_LISTING} element={<Placeholder name="Edit listing" />} />
-        <Route path={ROUTES.MY_LISTINGS} element={<Placeholder name="My listings" />} />
+        <Route path={ROUTES.EDIT_LISTING} element={<EditListingPage />} />
+        <Route path={ROUTES.MY_LISTINGS} element={<MyListingsPage />} />
         <Route path={ROUTES.SAVED} element={<SavedPage />} />
         <Route path={ROUTES.INBOX} element={<MessagesPage />} />
         <Route path={ROUTES.CHAT} element={<MessagesPage />} />

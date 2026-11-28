@@ -1,0 +1,86 @@
+.card {
+  display: grid;
+  grid-template-columns: 200px minmax(0, 1fr);
+  gap: var(--space-4);
+  padding: var(--space-4);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-card);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-card);
+}
+
+.photo {
+  align-self: start;
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  min-width: 0;
+}
+
+.headline {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2) var(--space-3);
+}
+
+.title {
+  margin: 0;
+  font: var(--font-title);
+  overflow-wrap: anywhere;
+}
+
+.link {
+  color: var(--color-body);
+  text-decoration: none;
+}
+
+.link:hover {
+  text-decoration: underline;
+}
+
+.link:focus-visible {
+  outline: 2px solid var(--color-text);
+  outline-offset: 2px;
+}
+
+.price {
+  margin: 0;
+  font: var(--font-price);
+  color: var(--color-text);
+}
+
+.rentedNote {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  margin: 0;
+  font: var(--font-small);
+  font-weight: 600;
+  color: var(--color-body);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-top: var(--space-2);
+}
+
+@media (max-width: 639px) {
+  .card {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  /* A shorter photo so the actions stay near the top of the screen */
+  .photo > div {
+    aspect-ratio: 16 / 9;
+  }
+
+  .actions > * {
+    flex: 1 1 auto;
+  }
+}

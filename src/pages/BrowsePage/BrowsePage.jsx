@@ -24,7 +24,6 @@ import {
   SLOW_LOADING_MS,
 } from "../../constants/carFilters";
 import styles from "./BrowsePage.module.css";
-
 function headingFor(area) {
   if (area === ANY) return `Cars in ${DEFAULT_CITY}`;
   if (area === OTHER_AREA) return "Cars in other areas";
@@ -49,7 +48,12 @@ export default function BrowsePage() {
     setSort,
     clearFilters,
   } = useCarFilters();
-  const { favoriteIds, toggleFavorite, error: favoriteError, clearError } = useFavorites();
+  const {
+    favoriteIds,
+    toggleFavorite,
+    error: favoriteError,
+    clearError,
+  } = useFavorites();
   const headingRef = useRef(null);
 
   // Search box text. Typing updates the URL after a short pause;
@@ -64,7 +68,10 @@ export default function BrowsePage() {
 
   useEffect(() => {
     if (searchText.trim() === filters.query) return undefined;
-    const timer = setTimeout(() => setQuery(searchText, { replace: true }), SEARCH_DEBOUNCE_MS);
+    const timer = setTimeout(
+      () => setQuery(searchText, { replace: true }),
+      SEARCH_DEBOUNCE_MS,
+    );
     return () => clearTimeout(timer);
   }, [searchText, filters.query, setQuery]);
 
@@ -88,13 +95,17 @@ export default function BrowsePage() {
   const handleFilterChange = (name, value) => filterSetters[name](value);
 
   // Results
-  const results = useMemo(() => sortCars(filterCars(cars, filters), filters.sort), [cars, filters]);
+  const results = useMemo(
+    () => sortCars(filterCars(cars, filters), filters.sort),
+    [cars, filters],
+  );
 
   // Load more: 12 at a time, starting over whenever search, filters or sort change
   const [shown, setShown] = useState({ key: filterKey, count: PAGE_SIZE });
   const visibleCount = shown.key === filterKey ? shown.count : PAGE_SIZE;
   const visibleCars = results.slice(0, visibleCount);
-  const loadMore = () => setShown({ key: filterKey, count: visibleCount + PAGE_SIZE });
+  const loadMore = () =>
+    setShown({ key: filterKey, count: visibleCount + PAGE_SIZE });
 
   // "Still loading…" after 10 seconds
   const [slowAttempt, setSlowAttempt] = useState(null);
@@ -103,7 +114,8 @@ export default function BrowsePage() {
     const timer = setTimeout(() => setSlowAttempt(attempt), SLOW_LOADING_MS);
     return () => clearTimeout(timer);
   }, [status, attempt]);
-  const showSlowNotice = status === LOAD_STATUS.LOADING && slowAttempt === attempt;
+  const showSlowNotice =
+    status === LOAD_STATUS.LOADING && slowAttempt === attempt;
 
   // Guests go to Login, then come back here
   const handleFavorite = (carId) => {
