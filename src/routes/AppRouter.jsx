@@ -10,7 +10,7 @@ import BrowsePage from "../pages/BrowsePage/BrowsePage";
 import CreateListingPage from "../pages/CreateListingPage/CreateListingPage";
 import ListingDetailPage from "../pages/ListingDetailPage/ListingDetailPage";
 import MyListingsPage from "../pages/MyListingsPage/MyListingsPage";
-
+import EditListingPage from "../pages/EditListingPage/EditListingPage";
 // Temporary stand-in.
 function Placeholder({ name }) {
   return <h1>{name} (coming soon)</h1>;
@@ -69,6 +69,7 @@ export default function AppRouter() {
         />
         <Route path={ROUTES.MY_LISTINGS} element={<MyListingsPage />} />
         {/* These are placeholders for now */}
+        <Route path={ROUTES.EDIT_LISTING} element={<EditListingPage />} />
         <Route path={ROUTES.SAVED} element={<Placeholder name="Saved" />} />
         <Route path={ROUTES.INBOX} element={<Placeholder name="Inbox" />} />
         <Route path={ROUTES.CHAT} element={<Placeholder name="Chat" />} />
