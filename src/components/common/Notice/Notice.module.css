@@ -1,0 +1,22 @@
+.notice {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-10) var(--space-4);
+  border: 1px dashed var(--color-border);
+  border-radius: var(--radius-card);
+  background: var(--color-surface);
+  text-align: center;
+}
+
+.title {
+  margin: 0;
+  font: var(--font-title);
+  color: var(--color-body);
+}
+
+.text {
+  margin: 0;
+  color: var(--color-muted);
+}
