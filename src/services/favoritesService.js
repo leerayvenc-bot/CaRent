@@ -1,4 +1,11 @@
-import { collection, deleteDoc, doc, getDocs, serverTimestamp, setDoc } from "firebase/firestore";
+import {
+  collection,
+  deleteDoc,
+  doc,
+  getDocs,
+  serverTimestamp,
+  setDoc,
+} from "firebase/firestore";
 import { db } from "../config/firebase";
 
 // Favorites live at users/{uid}/favorites/{carId}
@@ -14,7 +21,7 @@ export async function getFavoriteIds(uid) {
     return snapshot.docs.map((d) => d.id);
   } catch (error) {
     console.error(error);
-    throw new Error(LOAD_ERROR);
+    throw new Error(LOAD_ERROR, { cause: error });
   }
 }
 
@@ -23,7 +30,7 @@ export async function addFavorite(uid, carId) {
     await setDoc(favoriteDoc(uid, carId), { created_at: serverTimestamp() });
   } catch (error) {
     console.error(error);
-    throw new Error(SAVE_ERROR);
+    throw new Error(SAVE_ERROR, { cause: error });
   }
 }
 
@@ -32,6 +39,6 @@ export async function removeFavorite(uid, carId) {
     await deleteDoc(favoriteDoc(uid, carId));
   } catch (error) {
     console.error(error);
-    throw new Error(SAVE_ERROR);
+    throw new Error(SAVE_ERROR, { cause: error });
   }
 }
