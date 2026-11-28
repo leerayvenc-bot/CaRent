@@ -8,7 +8,9 @@ import Login from "../pages/Login";
 import Register from "../pages/Register";
 import BrowsePage from "../pages/BrowsePage/BrowsePage";
 import CreateListingPage from "../pages/CreateListingPage/CreateListingPage";
-import ListingDetailPage from "../pages/ListingDetailPAge/ListingDetailPage";
+import ListingDetailPage from "../pages/ListingDetailPage/ListingDetailPage";
+import MyListingsPage from "../pages/MyListingsPage/MyListingsPage";
+
 // Temporary stand-in.
 function Placeholder({ name }) {
   return <h1>{name} (coming soon)</h1>;
@@ -50,10 +52,7 @@ export default function AppRouter() {
 
       {/* Public: guests can see these */}
       <Route path={ROUTES.BROWSE} element={<BrowsePage />} />
-      <Route
-        path={ROUTES.LISTING}
-        element={<Placeholder name="Listing detail" />}
-      />
+      <Route path={ROUTES.LISTING} element={<ListingDetailPage />} />
 
       {/* Guests only: logged-in users get redirected away */}
       <Route element={<GuestOnly />}>
@@ -68,9 +67,8 @@ export default function AppRouter() {
           path={ROUTES.EDIT_LISTING}
           element={<Placeholder name="Edit listing" />}
         />
-        <Route path={ROUTES.LISTING} element={<ListingDetailPage />} />
-        /* These are placeholders for now, but you can replace them with real
-        pages later */
+        <Route path={ROUTES.MY_LISTINGS} element={<MyListingsPage />} />
+        {/* These are placeholders for now */}
         <Route path={ROUTES.SAVED} element={<Placeholder name="Saved" />} />
         <Route path={ROUTES.INBOX} element={<Placeholder name="Inbox" />} />
         <Route path={ROUTES.CHAT} element={<Placeholder name="Chat" />} />

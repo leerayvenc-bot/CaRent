@@ -13,7 +13,9 @@
   text-decoration: none;
   white-space: nowrap;
   cursor: pointer;
-  transition: background var(--motion-base) ease-out, border-color var(--motion-base) ease-out;
+  transition:
+    background var(--motion-base) ease-out,
+    border-color var(--motion-base) ease-out;
 }
 
 .button:focus-visible {
@@ -75,4 +77,12 @@
   .spinner {
     animation-duration: 2s;
   }
+}
+.danger {
+  background: var(--color-error);
+  color: var(--color-surface);
+}
+
+.danger:hover {
+  filter: brightness(0.9);
 }
