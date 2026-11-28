@@ -15,6 +15,7 @@ import { db } from "../config/firebase";
 import { CARS_FETCH_LIMIT } from "../constants/carFilters";
 import { CAR_STATUS } from "../constants/carStatus";
 import { getSampleCars } from "./sampleCars";
+import { deletePhotoByUrl, uploadCarPhoto } from "./photoService";
 
 const CARS_COLLECTION = "cars";
 const LOAD_ERROR = "Couldn't load cars. Check your connection and try again.";
@@ -44,7 +45,7 @@ function toCar(snapshot) {
 
 // The fields an owner can type into the form. Nothing else can be edited.
 // Firestore rejects `undefined`, so optional text falls back to "".
-function toEditableFields(values) {
+function toEditableFields(values, photoUrl) {
   return {
     model: values.model.trim(),
     price_per_day: Number(values.price_per_day),
@@ -55,8 +56,13 @@ function toEditableFields(values) {
     seats: Number(values.seats),
     location: values.location,
     tag: values.tag?.trim() ?? "",
-    photo_url: values.photo_url?.trim() ?? "",
+    photo_url: photoUrl,
   };
+}
+
+async function resolvePhotoUrl(values) {
+  if (values.photo) return uploadCarPhoto(values.photo);
+  return values.photo_url?.trim() ?? "";
 }
 
 // v1: fetch all listings once; search, filters and sort run in the browser.
@@ -90,6 +96,9 @@ export async function getCarById(carId) {
 
 // One user's listings, newest first.
 export async function getCarsByOwner(uid) {
+  if (USE_SAMPLE_CARS)
+    return (await getSampleCars()).filter((c) => c.owner_id === uid);
+
   try {
     const snapshot = await getDocs(
       query(collection(db, CARS_COLLECTION), where("owner_id", "==", uid)),
@@ -108,9 +117,10 @@ export async function getCarsByOwner(uid) {
 
 // owner: { uid, name }. Returns the new listing's id.
 export async function createCar(values, owner) {
+  const photoUrl = await resolvePhotoUrl(values);
   try {
     const ref = await addDoc(collection(db, CARS_COLLECTION), {
-      ...toEditableFields(values),
+      ...toEditableFields(values, photoUrl),
       status: CAR_STATUS.AVAILABLE,
       available_from: null,
       owner_id: owner.uid,
@@ -122,17 +132,26 @@ export async function createCar(values, owner) {
     return ref.id;
   } catch (error) {
     console.error(error);
+    if (values.photo) deletePhotoByUrl(photoUrl); // don't leave an unused upload behind
     throw new Error(SAVE_ERROR, { cause: error });
   }
 }
 
+
 export async function updateCar(carId, values) {
+  const photoUrl = await resolvePhotoUrl(values);
   try {
-    await updateDoc(doc(db, CARS_COLLECTION, carId), toEditableFields(values));
+    await updateDoc(
+      doc(db, CARS_COLLECTION, carId),
+      toEditableFields(values, photoUrl),
+    );
   } catch (error) {
     console.error(error);
+    if (values.photo) deletePhotoByUrl(photoUrl);
     throw new Error(SAVE_ERROR, { cause: error });
   }
+  // The old photo isn't used anymore once a new one is saved
+  if (values.photo) deletePhotoByUrl(values.photo_url);
 }
 
 // availableFrom (a Date) is only kept while the car is rented.

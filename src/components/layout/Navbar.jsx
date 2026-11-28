@@ -127,7 +127,13 @@ export default function Navbar() {
                 aria-label="Account"
                 aria-expanded={menuOpen}
               >
-                {user ? initial : <FiUser size={18} />}
+                {user?.photo_url ? (
+                  <img className="navbar-avatar-img" src={user.photo_url} alt="" />
+                ) : user ? (
+                  initial
+                ) : (
+                  <FiUser size={18} />
+                )}
               </button>
 
               {user && menuOpen && (
@@ -136,6 +142,16 @@ export default function Navbar() {
                     <strong>{user.name || 'Account'}</strong>
                     <span>{user.email}</span>
                   </div>
+                  <Link
+                    to={ROUTES.PROFILE}
+                    className="navbar-dropdown-item"
+                    onClick={() => {
+                      setMenuOpen(false);
+                      setOpen(false);
+                    }}
+                  >
+                    <FiUser size={16} /> My profile
+                  </Link>
                   <button className="navbar-dropdown-item" onClick={handleLogout}>
                     <FiLogOut size={16} /> Log out
                   </button>

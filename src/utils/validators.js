@@ -69,12 +69,12 @@ export const MAX_DESCRIPTION_LENGTH = 500;
 export const MAX_PRICE_PER_DAY = 100000;
 export const MIN_SEATS = 1;
 export const MAX_SEATS = 20;
+export const MAX_PHOTO_MB = 5;
+export const PHOTO_TYPES = ["image/jpeg", "image/png", "image/webp"];
 
 // The form stores the pickup area's label (e.g. "IT Park") in `location`
 const LOCATION_OPTIONS = PICKUP_AREAS.map(({ label }) => ({ value: label }));
 const isOneOf = (options, value) => options.some((o) => o.value === value);
-const PHOTO_URL_MESSAGE =
-  "Enter a full web address starting with http:// or https://.";
 
 export function validateModel(model) {
   const trimmed = model.trim();
@@ -138,21 +138,18 @@ export function validateDescription(description) {
   return "";
 }
 
-// Optional field: empty is fine, anything typed must be a web address
-export function validatePhotoUrl(url) {
-  const trimmed = (url ?? "").trim();
-  if (!trimmed) return "";
-  try {
-    const { protocol } = new URL(trimmed);
-    return protocol === "http:" || protocol === "https:"
-      ? ""
-      : PHOTO_URL_MESSAGE;
-  } catch {
-    return PHOTO_URL_MESSAGE;
+export function validatePhoto(file, existingUrl = "") {
+  if (!file) return existingUrl ? "" : "Add a photo of your car.";
+  if (!PHOTO_TYPES.includes(file.type)) {
+    return "Photo must be a JPG, PNG, or WebP image.";
   }
+  if (file.size > MAX_PHOTO_MB * 1024 * 1024) {
+    return `Photo must be ${MAX_PHOTO_MB} MB or smaller.`;
+  }
+  return "";
 }
 
-// values: the form's fields, all as strings. Returns { field: message } for the bad ones.
+// values: All fields are string except photo
 export function validateCarForm(values) {
   return collectErrors({
     model: validateModel(values.model),
@@ -164,7 +161,7 @@ export function validateCarForm(values) {
     location: validateLocation(values.location),
     tag: validateTag(values.tag),
     description: validateDescription(values.description),
-    photo_url: validatePhotoUrl(values.photo_url),
+    photo: validatePhoto(values.photo, values.photo_url),
   });
 }
 export const MAX_MESSAGE_LENGTH = 500;
@@ -175,5 +172,38 @@ export function validateMessage(text) {
   if (trimmed.length > MAX_MESSAGE_LENGTH) {
     return `Message must be ${MAX_MESSAGE_LENGTH} characters or less.`;
   }
+  return "";
+}
+
+// ---- Edit profile form ----
+export const MAX_NAME_LENGTH = 60;
+export const MAX_CITY_LENGTH = 40;
+export const MAX_BIO_LENGTH = 300;
+
+export function validateProfileForm({ name, city, bio, photo }) {
+  const trimmedName = name.trim();
+  return collectErrors({
+    photo: validateProfilePhoto(photo),
+    name: !trimmedName
+      ? "Full name is required."
+      : trimmedName.length > MAX_NAME_LENGTH
+        ? `Keep your name under ${MAX_NAME_LENGTH} characters.`
+        : "",
+    city:
+      city.trim().length > MAX_CITY_LENGTH
+        ? `Keep the city under ${MAX_CITY_LENGTH} characters.`
+        : "",
+    bio:
+      bio.trim().length > MAX_BIO_LENGTH
+        ? `Keep your bio under ${MAX_BIO_LENGTH} characters.`
+        : "",
+  });
+}
+
+// The profile photo is optional, so no file is fine
+export function validateProfilePhoto(file) {
+  if (!file) return "";
+  if (!PHOTO_TYPES.includes(file.type)) return "Photo must be a JPG, PNG, or WebP image.";
+  if (file.size > MAX_PHOTO_MB * 1024 * 1024) return `Photo must be ${MAX_PHOTO_MB} MB or smaller.`;
   return "";
 }

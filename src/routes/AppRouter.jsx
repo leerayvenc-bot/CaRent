@@ -7,15 +7,15 @@ import { ROUTES } from "../constants/routePaths";
 import Login from "../pages/Login";
 import Register from "../pages/Register";
 import BrowsePage from "../pages/BrowsePage/BrowsePage";
+import MessagesPage from "../pages/MessagesPage/MessagesPage";
 import CreateListingPage from "../pages/CreateListingPage/CreateListingPage";
+import SavedPage from "../pages/SavedPage/SavedPage";
 import ListingDetailPage from "../pages/ListingDetailPage/ListingDetailPage";
 import MyListingsPage from "../pages/MyListingsPage/MyListingsPage";
 import EditListingPage from "../pages/EditListingPage/EditListingPage";
-
-// Temporary stand-in.
-function Placeholder({ name }) {
-  return <h1>{name} (coming soon)</h1>;
-}
+import ProfilePage from "../pages/ProfilePage/ProfilePage";
+import EditProfilePage from "../pages/EditProfilePage/EditProfilePage";
+import UserProfilePage from "../pages/UserProfilePage/UserProfilePage";
 
 function NotFound() {
   return (
@@ -54,6 +54,7 @@ export default function AppRouter() {
       {/* Public: guests can see these */}
       <Route path={ROUTES.BROWSE} element={<BrowsePage />} />
       <Route path={ROUTES.LISTING} element={<ListingDetailPage />} />
+      <Route path={ROUTES.USER_PROFILE} element={<UserProfilePage />} />
 
       {/* Guests only: logged-in users get redirected away */}
       <Route element={<GuestOnly />}>
@@ -66,10 +67,11 @@ export default function AppRouter() {
         <Route path={ROUTES.CREATE_LISTING} element={<CreateListingPage />} />
         <Route path={ROUTES.EDIT_LISTING} element={<EditListingPage />} />
         <Route path={ROUTES.MY_LISTINGS} element={<MyListingsPage />} />
-        {/* These are placeholders for now */}
-        <Route path={ROUTES.SAVED} element={<Placeholder name="Saved" />} />
-        <Route path={ROUTES.INBOX} element={<Placeholder name="Inbox" />} />
-        <Route path={ROUTES.CHAT} element={<Placeholder name="Chat" />} />
+        <Route path={ROUTES.SAVED} element={<SavedPage />} />
+        <Route path={ROUTES.INBOX} element={<MessagesPage />} />
+        <Route path={ROUTES.CHAT} element={<MessagesPage />} />
+        <Route path={ROUTES.PROFILE} element={<ProfilePage />} />
+        <Route path={ROUTES.EDIT_PROFILE} element={<EditProfilePage />} />
       </Route>
 
       {/* Anything else */}

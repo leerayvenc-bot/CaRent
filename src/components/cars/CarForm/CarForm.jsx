@@ -1,6 +1,7 @@
 import { useRef, useState } from "react";
 import FormField from "../../common/FormField/FormField";
 import Button from "../../common/Button/Button";
+import PhotoUpload from "../PhotoUpload/PhotoUpload"; 
 import {
   CAR_TYPE_OPTIONS,
   FUEL_OPTIONS,
@@ -28,14 +29,19 @@ const EMPTY_VALUES = {
   tag: "",
   description: "",
   photo_url: "",
+  photo: null,
 };
 
+const TEXT_KEYS = Object.keys(EMPTY_VALUES).filter((key) => key !== "photo");
 // Inputs hold strings, so numbers from a saved car are turned into text
 function toFormValues(car) {
   if (!car) return EMPTY_VALUES;
-  return Object.fromEntries(
-    Object.keys(EMPTY_VALUES).map((key) => [key, String(car[key] ?? "")]),
-  );
+  return {
+    ...EMPTY_VALUES,
+    ...Object.fromEntries(
+      TEXT_KEYS.map((key) => [key, String(car[key] ?? "")]),
+    ),
+  };
 }
 
 // The form for creating or editing a listing. It only collects and checks input.
@@ -73,6 +79,10 @@ export default function CarForm({
     setTouched((t) => ({ ...t, [name]: true }));
   };
 
+  const handlePhotoChange = (file) => {
+    setValues((v) => ({ ...v, photo: file }));
+    setTouched((t) => ({ ...t, photo: true }));
+  };
   const handleSubmit = (e) => {
     e.preventDefault();
     setSubmitted(true);
@@ -193,14 +203,13 @@ export default function CarForm({
         </div>
 
         <div className={styles.wide}>
-          <FormField
-            label="Photo link"
-            type="url"
-            optional
-            placeholder="https://…"
-            hint="Paste a link to a photo of your car. File uploads aren't available yet."
-            autoComplete="off"
-            {...field("photo_url")}
+          <PhotoUpload
+            name="photo"
+            file={values.photo}
+            currentUrl={values.photo_url}
+            error={shown("photo")}
+            onChange={handlePhotoChange}
+            onBlur={handleBlur}
           />
         </div>
       </div>

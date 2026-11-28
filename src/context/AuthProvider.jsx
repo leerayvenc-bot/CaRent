@@ -16,7 +16,7 @@ export default function AuthProvider({ children }) {
 
   const value = useMemo(
     () => ({
-      user, // { uid, name, email } or null
+      user, // { uid, name, email, city, bio, photo_url, created_at } or null
       loading,
       isLoggedIn: Boolean(user),
 
@@ -28,6 +28,12 @@ export default function AuthProvider({ children }) {
       async login(formValues) {
         const profile = await authService.login(formValues);
         setUser(profile);
+        return profile;
+      },
+      async updateProfile(values) {
+        if (!user) return null;
+        const profile = await authService.updateUserProfile(user.uid, values);
+        setUser((current) => ({ ...current, ...profile }));
         return profile;
       },
       logout: authService.logout, // the listener sets user to null

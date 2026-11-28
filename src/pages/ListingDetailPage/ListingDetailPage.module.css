@@ -1,5 +1,9 @@
 .page {
   --page-gutter: var(--space-10);
+  /* Keeps the photo from filling a wide screen; About and Ratings stay in view */
+  --photo-max-height: 520px;
+  /* The navbar is sticky (84px tall on desktop), so the panel sticks just below it */
+  --sticky-top: calc(84px + var(--space-6));
   min-height: 100vh;
   background: var(--color-bg);
   color: var(--color-body);
@@ -7,88 +11,95 @@
   -webkit-font-smoothing: antialiased;
 }
 
+.page :is(button, input, select, textarea) {
+  font-family: inherit;
+}
+
 .inner {
   display: flex;
   flex-direction: column;
   gap: var(--space-4);
-  max-width: 1100px;
+  max-width: var(--content-max);
   margin: 0 auto;
   padding: var(--space-6) var(--page-gutter) var(--space-10);
 }
 
-.back {
-  display: inline-flex;
+.breadcrumb {
+  display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  align-self: flex-start;
-  gap: var(--space-1);
-  min-height: var(--target-min);
-  color: var(--color-link);
-  font: var(--font-body-strong);
-  text-decoration: none;
-}
-
-.back:hover {
-  text-decoration: underline;
-}
-
-.back:focus-visible {
-  outline: 2px solid var(--color-text);
-  outline-offset: 2px;
-}
-
-/* Desktop: photo and details on the left, the action panel on the right.
-   Phone: header, photo, action panel, then details, so Message owner is near the top. */
-.layout {
-  display: grid;
-  grid-template-columns: minmax(0, 2fr) minmax(280px, 1fr);
-  grid-template-areas:
-    "header  side"
-    "photo   side"
-    "details side";
-  grid-template-rows: auto auto 1fr;
-  gap: var(--space-4) var(--space-8);
-}
-
-.header {
-  grid-area: header;
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-1);
-}
-
-.photo {
-  grid-area: photo;
-}
-
-.side {
-  grid-area: side;
-  align-self: start;
-  position: sticky;
-  top: var(--space-6);
-}
-
-.details {
-  grid-area: details;
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-6);
-  min-width: 0;
-}
-
-.eyebrow {
-  margin: 0;
-  font: var(--font-caption);
+  gap: var(--space-2);
+  font: var(--font-small);
   color: var(--color-muted);
 }
 
-.title {
-  margin: 0;
-  font: var(--font-heading-lg);
-  color: var(--color-body);
-  overflow-wrap: anywhere;
+.crumbLink {
+  color: var(--color-muted);
+  text-decoration: none;
 }
 
-.section {
+.crumbLink:hover {
+  color: var(--color-link);
+  text-decoration: underline;
+}
+
+.crumbCurrent {
+  font-weight: 600;
+  color: var(--color-body);
+}
+
+/* Desktop: content on the left, the rental panel sticks on the right.
+   Mobile: photo, then the panel, then the details. */
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(340px, 440px);
+  grid-template-areas:
+    "photo panel"
+    "about panel"
+    "ratings panel";
+  grid-template-rows: auto auto 1fr;
+  gap: var(--space-6);
+  align-items: start;
+}
+
+.photo {
+  position: relative;
+  grid-area: photo;
+}
+
+/* CarPhoto keeps its 3:2 shape until it reaches the cap, then crops */
+.photo > :first-child {
+  width: 100%;
+  max-height: var(--photo-max-height);
+}
+
+.photoBadge {
+  position: absolute;
+  top: var(--space-4);
+  left: var(--space-4);
+}
+
+.photoFavorite {
+  position: absolute;
+  top: var(--space-2);
+  right: var(--space-2);
+}
+
+.panel {
+  position: sticky;
+  top: var(--sticky-top);
+  grid-area: panel;
+}
+
+.about {
+  grid-area: about;
+}
+
+.ratings {
+  grid-area: ratings;
+}
+
+.card {
   display: flex;
   flex-direction: column;
   gap: var(--space-3);
@@ -96,9 +107,10 @@
   border: 1px solid var(--color-border);
   border-radius: var(--radius-card);
   background: var(--color-surface);
+  box-shadow: var(--shadow-card);
 }
 
-.sectionTitle {
+.cardTitle {
   margin: 0;
   font: var(--font-title);
   color: var(--color-body);
@@ -106,30 +118,48 @@
 
 .description {
   margin: 0;
+  font: var(--font-body);
+  color: var(--color-body);
   white-space: pre-line;
   overflow-wrap: anywhere;
 }
 
-.notice {
+.muted {
+  margin: 0;
+  font: var(--font-body);
+  color: var(--color-muted);
+}
+
+.missing {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: var(--space-3);
-  padding: var(--space-10) var(--space-4);
-  border: 1px dashed var(--color-border);
+  padding: var(--space-10) var(--space-6);
   border-radius: var(--radius-card);
   background: var(--color-surface);
   text-align: center;
 }
 
-.noticeTitle {
-  margin: 0;
-  font: var(--font-title);
-  color: var(--color-body);
+.missingIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 64px;
+  border-radius: var(--radius-pill);
+  background: var(--color-bg);
+  color: var(--color-muted);
 }
 
-.noticeText {
+.missingTitle {
   margin: 0;
+  font: var(--font-title);
+}
+
+.missingText {
+  max-width: 420px;
+  margin: 0 0 var(--space-2);
   color: var(--color-muted);
 }
 
@@ -137,20 +167,18 @@
   .page {
     --page-gutter: var(--space-6);
   }
-}
 
-@media (max-width: 859px) {
   .layout {
     grid-template-columns: minmax(0, 1fr);
     grid-template-areas:
-      "header"
       "photo"
-      "side"
-      "details";
+      "panel"
+      "about"
+      "ratings";
     grid-template-rows: none;
   }
 
-  .side {
+  .panel {
     position: static;
   }
 }
@@ -158,9 +186,5 @@
 @media (max-width: 639px) {
   .page {
     --page-gutter: var(--space-4);
-  }
-
-  .section {
-    padding: var(--space-4);
   }
 }

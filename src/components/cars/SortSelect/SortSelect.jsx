@@ -3,7 +3,7 @@ import { MdSwapVert } from "react-icons/md";
 import { SORT_OPTIONS } from "../../../constants/carFilters";
 import styles from "./SortSelect.module.css";
 
-export default function SortSelect({ value, onChange }) {
+export default function SortSelect({ value, onChange, options = SORT_OPTIONS }) {
   const id = useId();
   return (
     <div className={styles.sort}>
@@ -12,7 +12,7 @@ export default function SortSelect({ value, onChange }) {
         <span className={styles.labelText}>Sort</span>
       </label>
       <select id={id} className={styles.select} value={value} onChange={(e) => onChange(e.target.value)}>
-        {SORT_OPTIONS.map((o) => (
+        {options.map((o) => (
           <option key={o.value} value={o.value}>
             {o.label}
           </option>
